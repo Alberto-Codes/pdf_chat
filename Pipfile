@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+streamlit = "*"
+pypdf = "*"
+openai = "*"
+faiss-cpu  = "*"
+langchain = "*"
+python-dotenv = "*"
+
+[dev-packages]
+black = "*"
+isort = "*"
+
+
+[requires]
+python_version = "3.10"
