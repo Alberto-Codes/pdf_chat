@@ -8,7 +8,7 @@ from langchain.vectorstores.faiss import FAISS
 from pypdf import PdfReader
 import streamlit as st
 
-@st.cache
+@st.cache_data
 def parse_pdf(file):
     pdf = PdfReader(file)
     output = []
@@ -18,7 +18,7 @@ def parse_pdf(file):
 
     return "\n\n".join(output)
 
-@st.cache
+@st.cache_data
 def embed_text(text):
     """Split the text and embed it in a FAISS vector store"""
     text_splitter = RecursiveCharacterTextSplitter(
@@ -30,3 +30,13 @@ def embed_text(text):
     index = FAISS.from_texts(texts, embeddings)
 
     return index
+
+def get_answer(index, query):
+    """Returns answer to a query using langchain QA chain"""
+
+    docs = index.similarity_search(query)
+
+    chain = load_qa_chain(OpenAI(temperature=0))
+    answer = chain.run(input_documents=docs, question=query)
+
+    return answer

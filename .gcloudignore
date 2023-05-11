@@ -1,0 +1,10 @@
+.git/
+.github/
+__pycache__/
+*.pyc
+.env
+Pipfile
+Pipfile.lock
+*.log
+.streamlit/
+docs/

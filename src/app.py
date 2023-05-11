@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils import parse_pdf, embed_text, get_answer
+from utils import parse_pdf, embed_text, get_answer
 
 st.header("Doc QA")
 uploaded_file = st.file_uploader("Upload a pdf", type=["pdf"])
@@ -10,3 +10,4 @@ if uploaded_file is not None:
     button = st.button("Submit")
     if button:
         st.write(get_answer(index, query))
+
