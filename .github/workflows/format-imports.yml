@@ -1,0 +1,43 @@
+name: Python
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  format-imports:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install isort
+
+    - name: Check imports formatting
+      run: isort --check-only .
+
+    - name: Add comment to PR
+      if: github.event.pull_request.failed
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const PR_NUMBER = context.issue.number;
+          const PR_TITLE = context.issue.title;
+          const PR_BODY = context.issue.body;
+          const FAILURE_REASON = 'isort formatted imports';
+          const NEW_PR_BODY = PR_BODY + '\n\n' + FAILURE_REASON;
+          await github.rest.issues.editComment({
+            issue_number: PR_NUMBER,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: NEW_PR_BODY
+          });
